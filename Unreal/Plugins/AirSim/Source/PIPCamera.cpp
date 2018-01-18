@@ -65,12 +65,17 @@ void APIPCamera::BeginPlay()
 
 void APIPCamera::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    for (unsigned int image_type = 0; image_type < imageTypeCount(); ++image_type) {
-        if (noise_materials_[image_type + 1])
-            captures_[image_type]->PostProcessSettings.RemoveBlendable(noise_materials_[image_type + 1]);
-    }
-    if (noise_materials_[0])
-        camera_->PostProcessSettings.RemoveBlendable(noise_materials_[0]);
+    if (noise_materials_.Num() != 0) {
+		for (unsigned int image_type = 0; image_type < imageTypeCount(); ++image_type) {
+				if (noise_materials_[image_type + 1]) {
+					captures_[image_type]->PostProcessSettings.RemoveBlendable(noise_materials_[image_type + 1]);
+				}
+			}
+
+		if (noise_materials_[0]) {
+			camera_->PostProcessSettings.RemoveBlendable(noise_materials_[0]);
+		}
+	}
 
     noise_material_static_ = nullptr;
     noise_materials_.Reset();
